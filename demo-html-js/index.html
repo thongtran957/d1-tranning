@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Add datatables library -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Add data.json -->
+    <script type="application/json" src="data.json"></script>
+</head>
+<body>
+<div id="container">
+    <h1>Danh sách sinh viên</h1>
+    <button type="button" class="btn btn-primary" onclick="show_modal()">Tạo mới</button>
+    <div>
+        <table id="dtBasicExample" class="table table-bordered table-striped" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="checkout">
+                        <label class="custom-control-label"></label>
+                    </div>
+                </th>
+                <th>Mã SV</th>
+                <th>Họ Tên</th>
+                <th>Ngày Sinh</th>
+                <th>Giới Tính</th>
+                <th>Địa chỉ</th>
+                <th>Khoa</th>
+                <th>Chuyên Ngành</th>
+                <th>Sửa</th>
+                <th>Xóa</th>
+            </tr>
+            </thead>
+            <tbody id="content">
+            </tbody>
+        </table>
+    </div>
+    <button type="button" class="btn btn-primary">Xóa</button>
+    <div id="test">
+        <div class="row d-flex justify-content-center modalWrapper">
+            <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <h4 class="modal-title w-100 font-weight-bold ml-5">Tạo mới sinh viên</h4>
+                            <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body mx-3">
+                            <form method="POST" id="formAdd" name="formAdd">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Mã sinh viên *</label>
+                                    <div class="col-sm-9">
+                                        <input id="ma_sv"
+                                               type="text"
+                                               class="form-control"
+                                               name="ma_sv"
+                                               value="" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Họ tên *</label>
+                                    <div class="col-sm-9">
+                                        <input id="ho_ten"
+                                               type="text"
+                                               class="form-control"
+                                               name="ho_ten"
+                                               value="" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Giới tính *</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="gioi_tinh" required>
+                                            <option>Nam</option>
+                                            <option>Nữ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Ngày sinh *</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="date"
+                                               value="2019-06-10"
+                                               id="ngay_sinh"
+                                               required
+                                               name="ngay_sinh">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Địa chỉ </label>
+                                    <div class="col-sm-9">
+                                        <input id="dia_chi"
+                                               type="text"
+                                               class="form-control"
+                                               name="dia_chi"
+                                               value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Số điện thoại *</label>
+                                    <div class="col-sm-9">
+                                        <input id="so_dien_thoai"
+                                               type="text"
+                                               class="form-control"
+                                               name="dia_chi"
+                                               value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Khoa *</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="khoa" required>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Chuyên Ngành *</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="chuyen_nganh" required>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary">Thêm</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    //getdata from file json and load data to screen
+    $.getJSON("data.json", function (data) {
+        content = ''
+        Object.keys(data).forEach(key => {
+            var row_content =
+                '<tr>\n' +
+                '<th scope="row">\n' +
+                '<div class="custom-control custom-checkbox">\n' +
+                '<input type="checkbox" class="custom-control-input">\n' +
+                '<label class="custom-control-label"></label>\n' +
+                '</div>\n' +
+                '</th>\n' +
+                '<th>' + `${data[key].ma_sv}` + '</th>\n' +
+                '<th>' + `${data[key].ho_ten}` + '</th>\n' +
+                '<th>' + `${data[key].ngay_sinh}` + '</th>\n' +
+                '<th>' + `${data[key].gioi_tinh}` + '</th>\n' +
+                '<th>' + `${data[key].dia_chi}` + '</th>\n' +
+                '<th>' + `${data[key].khoa}` + '</th>\n' +
+                '<th>' + `${data[key].chuyen_nganh}` + '</th>\n' +
+                '<th>\n' +
+                '<button class="btn btn-outline-primary"><i class="fa fa-pencil"></i></button>\n' +
+                '</th>\n' +
+                '<th>\n' +
+                '<button class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>\n' +
+                '</th>\n' +
+                '</tr>\n'
+            content += row_content
+        })
+        document.getElementById("content").innerHTML = content
+    });
+
+    function show_modal() {
+        $('#modalAdd').modal();
+    }
+
+    var faculty_data = [
+        {
+            "id" : 1,
+            "name" : "CNTT",
+        },
+        {
+            "id" : 2,
+            "name" : "QTKD",
+        },
+    ]
+
+    var major_data = [
+        {
+            'id' : 1,
+            'name' : 'phan mem',
+            'faculty_id' : 1
+        },
+        {
+            'id' : 1,
+            'name' : 'phan cung',
+            'faculty_id' : 1
+        },
+        {
+            'id' : 1,
+            'name' : 'QTKD1',
+            'faculty_id' : 2
+        },
+        {
+            'id' : 1,
+            'name' : 'QTKD2',
+            'faculty_id' : 2
+        },
+        {
+            'id' : 1,
+            'name' : 'QTKD3',
+            'faculty_id' : 2
+        }
+    ]
+
+
+    //dependent box faculty and major
+    var faculty_content = ""
+    faculty_data.forEach(function (data) {
+        faculty_content += '<option value="' + data.id + '">' + data.name+ '</option>'
+    })
+    document.getElementById("khoa").innerHTML = faculty_content
+
+    var major_content = ""
+    major_data.forEach(function (data) {
+        major_content += '<option value="' + data.faculty_id +  '">' + data.name+ '</option>'
+    })
+    document.getElementById("chuyen_nganh").innerHTML = major_content
+
+    var khoa = $("#khoa")
+    var chuyen_nganh = $("#chuyen_nganh")
+    $options = chuyen_nganh.find( 'option' );
+
+    khoa.on('change', function () {
+        chuyen_nganh.html( $options.filter( '[value="' + this.value + '"]' ) );
+    }).trigger('change')
+
+
+
+</script>
+</html>
