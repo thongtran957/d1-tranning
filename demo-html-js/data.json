@@ -1,21 +1,24 @@
-{
-  "sv1": {
-    "ma_sv": 1,
-    "ho_ten": "tom",
-    "ngay_sinh": "8/1/1997",
-    "gioi_tinh": "Nam",
-    "dia_chi": "Da nang",
-    "khoa": "CNTT",
-    "chuyen_nganh": "CNPM"
+[
+  {
+    "id": 1,
+    "name": "tom",
+    "birthday": "8/1/1997",
+    "gender": "Nam",
+    "address": "Da nang",
+    "phone_number": "097798746",
+    "faculty": "CNTT",
+    "major": "CNPM"
   },
-  "sv2": {
-    "ma_sv": 2,
-    "ho_ten": "jerry",
-    "ngay_sinh": "8/1/1997",
-    "gioi_tinh": "Nam",
-    "dia_chi": "Da nang",
-    "khoa": "CNTT",
-    "chuyen_nganh": "CNPM"
+  {
+    "id": 2,
+    "name": "jerry",
+    "birthday": "8/1/1997",
+    "gender": "Nam",
+    "address": "Da nang",
+    "phone_number": "097798746",
+    "faculty": "CNTT",
+    "major": "CNPM"
   }
-}
+]
+
 

@@ -25,6 +25,7 @@
 <div id="container">
     <h1>Danh sách sinh viên</h1>
     <button type="button" class="btn btn-primary" onclick="show_modal()">Tạo mới</button>
+    <div id="msg"></div>
     <div>
         <table id="dtBasicExample" class="table table-bordered table-striped" cellspacing="0" width="100%">
             <thead>
@@ -40,6 +41,7 @@
                 <th>Ngày Sinh</th>
                 <th>Giới Tính</th>
                 <th>Địa chỉ</th>
+                <th>Số điện thoại</th>
                 <th>Khoa</th>
                 <th>Chuyên Ngành</th>
                 <th>Sửa</th>
@@ -64,31 +66,31 @@
                             </button>
                         </div>
                         <div class="modal-body mx-3">
-                            <form method="POST" id="formAdd" name="formAdd">
+                            <form id="formAdd" name="formAdd">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Mã sinh viên *</label>
                                     <div class="col-sm-9">
-                                        <input id="ma_sv"
+                                        <input id="id"
                                                type="text"
                                                class="form-control"
-                                               name="ma_sv"
-                                               value="" required>
+                                               name="id"
+                                               required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Họ tên *</label>
                                     <div class="col-sm-9">
-                                        <input id="ho_ten"
+                                        <input id="name"
                                                type="text"
                                                class="form-control"
-                                               name="ho_ten"
-                                               value="" required>
+                                               name="name"
+                                               required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Giới tính *</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" id="gioi_tinh" required>
+                                        <select class="form-control" id="gender" name="gender" required>
                                             <option>Nam</option>
                                             <option>Nữ</option>
                                         </select>
@@ -98,36 +100,34 @@
                                     <label class="col-sm-3 col-form-label">Ngày sinh *</label>
                                     <div class="col-sm-9">
                                         <input class="form-control" type="date"
+                                               id="birthday"
                                                value="2019-06-10"
-                                               id="ngay_sinh"
                                                required
-                                               name="ngay_sinh">
+                                               name="birthday">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Địa chỉ </label>
                                     <div class="col-sm-9">
-                                        <input id="dia_chi"
+                                        <input id="address"
                                                type="text"
                                                class="form-control"
-                                               name="dia_chi"
-                                               value="">
+                                               name="address">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Số điện thoại *</label>
                                     <div class="col-sm-9">
-                                        <input id="so_dien_thoai"
+                                        <input id="phone_number"
                                                type="text"
                                                class="form-control"
-                                               name="dia_chi"
-                                               value="">
+                                               name="phone_number">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Khoa *</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" id="khoa" required>
+                                        <select class="form-control" id="faculty" name="faculty" required>
 
                                         </select>
                                     </div>
@@ -135,12 +135,12 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Chuyên Ngành *</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" id="chuyen_nganh" required>
+                                        <select class="form-control" id="major" name="major" required>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary">Thêm</button>
+                                    <button type="button" class="btn btn-danger" id="btn-create">Thêm</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
                                 </div>
                             </form>
@@ -153,10 +153,50 @@
 </div>
 </body>
 <script>
+    var faculty_data = [
+        {
+            "id": 1,
+            "name": "CNTT",
+        },
+        {
+            "id": 2,
+            "name": "QTKD",
+        },
+    ]
+
+    var major_data = [
+        {
+            'id': 1,
+            'name': 'phan mem',
+            'faculty_id': 1
+        },
+        {
+            'id': 2,
+            'name': 'phan cung',
+            'faculty_id': 1
+        },
+        {
+            'id': 3,
+            'name': 'QTKD1',
+            'faculty_id': 2
+        },
+        {
+            'id': 4,
+            'name': 'QTKD2',
+            'faculty_id': 2
+        },
+        {
+            'id': 5,
+            'name': 'QTKD3',
+            'faculty_id': 2
+        }
+    ]
     //getdata from file json and load data to screen
+    var my_data
     $.getJSON("data.json", function (data) {
+        my_data = data
         content = ''
-        Object.keys(data).forEach(key => {
+        data.forEach(function (obj) {
             var row_content =
                 '<tr>\n' +
                 '<th scope="row">\n' +
@@ -165,13 +205,14 @@
                 '<label class="custom-control-label"></label>\n' +
                 '</div>\n' +
                 '</th>\n' +
-                '<th>' + `${data[key].ma_sv}` + '</th>\n' +
-                '<th>' + `${data[key].ho_ten}` + '</th>\n' +
-                '<th>' + `${data[key].ngay_sinh}` + '</th>\n' +
-                '<th>' + `${data[key].gioi_tinh}` + '</th>\n' +
-                '<th>' + `${data[key].dia_chi}` + '</th>\n' +
-                '<th>' + `${data[key].khoa}` + '</th>\n' +
-                '<th>' + `${data[key].chuyen_nganh}` + '</th>\n' +
+                '<th>' + obj.id + '</th>\n' +
+                '<th>' + obj.name + '</th>\n' +
+                '<th>' + obj.birthday + '</th>\n' +
+                '<th>' + obj.gender + '</th>\n' +
+                '<th>' + obj.address + '</th>\n' +
+                '<th>' + obj.phone_number + '</th>\n' +
+                '<th>' + obj.faculty + '</th>\n' +
+                '<th>' + obj.major + '</th>\n' +
                 '<th>\n' +
                 '<button class="btn btn-outline-primary"><i class="fa fa-pencil"></i></button>\n' +
                 '</th>\n' +
@@ -188,68 +229,105 @@
         $('#modalAdd').modal();
     }
 
-    var faculty_data = [
-        {
-            "id" : 1,
-            "name" : "CNTT",
-        },
-        {
-            "id" : 2,
-            "name" : "QTKD",
-        },
-    ]
-
-    var major_data = [
-        {
-            'id' : 1,
-            'name' : 'phan mem',
-            'faculty_id' : 1
-        },
-        {
-            'id' : 1,
-            'name' : 'phan cung',
-            'faculty_id' : 1
-        },
-        {
-            'id' : 1,
-            'name' : 'QTKD1',
-            'faculty_id' : 2
-        },
-        {
-            'id' : 1,
-            'name' : 'QTKD2',
-            'faculty_id' : 2
-        },
-        {
-            'id' : 1,
-            'name' : 'QTKD3',
-            'faculty_id' : 2
-        }
-    ]
-
-
     //dependent box faculty and major
     var faculty_content = ""
     faculty_data.forEach(function (data) {
-        faculty_content += '<option value="' + data.id + '">' + data.name+ '</option>'
+        faculty_content += '<option value="' + data.id + '">' + data.name + '</option>'
     })
-    document.getElementById("khoa").innerHTML = faculty_content
+    document.getElementById("faculty").innerHTML = faculty_content
 
     var major_content = ""
     major_data.forEach(function (data) {
-        major_content += '<option value="' + data.faculty_id +  '">' + data.name+ '</option>'
+        major_content += '<option value="' + data.faculty_id + '">' + data.name + '</option>'
     })
-    document.getElementById("chuyen_nganh").innerHTML = major_content
+    document.getElementById("major").innerHTML = major_content
 
-    var khoa = $("#khoa")
-    var chuyen_nganh = $("#chuyen_nganh")
-    $options = chuyen_nganh.find( 'option' );
+    var faculty = $("#faculty")
+    var major = $("#major")
+    $options = major.find('option')
 
-    khoa.on('change', function () {
-        chuyen_nganh.html( $options.filter( '[value="' + this.value + '"]' ) );
+    faculty.on('change', function () {
+        major.html($options.filter('[value="' + this.value + '"]'))
     }).trigger('change')
 
+    $('#btn-create').click(function (e) {
+        //get data from form and format
+        var formInputs = $('#formAdd').serializeArray()
+        var obj = {}
+        formInputs.forEach(function (data) {
+            switch (data.name) {
+                case 'id':
+                    obj.id = data.value
+                    break;
+                case 'name':
+                    obj.name = data.value
+                    break;
+                case 'birthday':
+                    obj.birthday = data.value
+                    break;
+                case 'gender':
+                    obj.gender = data.value
+                    break;
+                case 'address':
+                    obj.address = data.value
+                    break;
+                case 'phone_number':
+                    obj.phone_number = data.value
+                    break;
+                case 'faculty':
+                    data.value = $("#faculty option:selected").text()
+                    obj.faculty = data.value
+                    break;
+                case 'major':
+                    data.value = $("#major option:selected").text()
+                    obj.major = data.value
+                    break;
+                default:
+            }
+        })
+        //validate duplicate id
+        check = true
+        my_data.forEach(function (ele) {
+            if (obj.id == ele.id) {
+                check = false
+                $('#modalAdd').modal('hide')
+                document.getElementById("msg").innerHTML = '<label>Trùng mã số sinh viên!</label>'
+            }
+        })
 
+        if (check == true) {
+            my_data.push(obj)
+            content = ''
+            my_data.forEach(function (obj) {
+                var row_content =
+                    '<tr>\n' +
+                    '<th scope="row">\n' +
+                    '<div class="custom-control custom-checkbox">\n' +
+                    '<input type="checkbox" class="custom-control-input">\n' +
+                    '<label class="custom-control-label"></label>\n' +
+                    '</div>\n' +
+                    '</th>\n' +
+                    '<th>' + obj.id + '</th>\n' +
+                    '<th>' + obj.name + '</th>\n' +
+                    '<th>' + obj.birthday + '</th>\n' +
+                    '<th>' + obj.gender + '</th>\n' +
+                    '<th>' + obj.address + '</th>\n' +
+                    '<th>' + obj.phone_number + '</th>\n' +
+                    '<th>' + obj.faculty + '</th>\n' +
+                    '<th>' + obj.major + '</th>\n' +
+                    '<th>\n' +
+                    '<button class="btn btn-outline-primary"><i class="fa fa-pencil"></i></button>\n' +
+                    '</th>\n' +
+                    '<th>\n' +
+                    '<button class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>\n' +
+                    '</th>\n' +
+                    '</tr>\n'
+                content += row_content
+            })
+            document.getElementById("content").innerHTML = content
+        }
+        console.log(my_data)
+    })
 
 </script>
 </html>
