@@ -14,143 +14,134 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <!-- Add icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Add datatables library -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <!-- Add data.json -->
     <script type="application/json" src="data.json"></script>
 </head>
 <body>
 <div id="container">
     <h1>Danh sách sinh viên</h1>
-    <button type="button" class="btn btn-primary" onclick="show_modal()">Tạo mới</button>
+    <button type="button" class="btn btn-primary" data-target="#modalAdd" data-toggle="modal" id="0">Tạo mới</button>
     <div id="msg"></div>
-    <div>
-        <table id="dtBasicExample" class="table table-bordered table-striped" cellspacing="0" width="100%">
-            <thead>
-            <tr>
-                <th>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="checkout">
-                        <label class="custom-control-label"></label>
-                    </div>
-                </th>
-                <th>Mã SV</th>
-                <th>Họ Tên</th>
-                <th>Ngày Sinh</th>
-                <th>Giới Tính</th>
-                <th>Địa chỉ</th>
-                <th>Số điện thoại</th>
-                <th>Khoa</th>
-                <th>Chuyên Ngành</th>
-                <th>Sửa</th>
-                <th>Xóa</th>
-            </tr>
-            </thead>
-            <tbody id="content">
-            </tbody>
-        </table>
-    </div>
-    <button type="button" class="btn btn-primary">Xóa</button>
-    <div id="test">
-        <div class="row d-flex justify-content-center modalWrapper">
-            <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header text-center">
-                            <h4 class="modal-title w-100 font-weight-bold ml-5">Tạo mới sinh viên</h4>
-                            <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body mx-3">
-                            <form id="formAdd" name="formAdd">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Mã sinh viên *</label>
-                                    <div class="col-sm-9">
-                                        <input id="id"
-                                               type="text"
-                                               class="form-control"
-                                               name="id"
-                                               required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Họ tên *</label>
-                                    <div class="col-sm-9">
-                                        <input id="name"
-                                               type="text"
-                                               class="form-control"
-                                               name="name"
-                                               required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Giới tính *</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" id="gender" name="gender" required>
-                                            <option>Nam</option>
-                                            <option>Nữ</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Ngày sinh *</label>
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="date"
-                                               id="birthday"
-                                               value="2019-06-10"
-                                               required
-                                               name="birthday">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Địa chỉ </label>
-                                    <div class="col-sm-9">
-                                        <input id="address"
-                                               type="text"
-                                               class="form-control"
-                                               name="address">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Số điện thoại *</label>
-                                    <div class="col-sm-9">
-                                        <input id="phone_number"
-                                               type="text"
-                                               class="form-control"
-                                               name="phone_number">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Khoa *</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" id="faculty" name="faculty" required>
+    <table id="dtBasicExample" class="table table-bordered table-striped" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>
+                <input class="custom-control custom-checkbox" type="checkbox" id="select-all">
+            </th>
+            <th>Mã SV</th>
+            <th>Họ Tên</th>
+            <th>Ngày Sinh</th>
+            <th>Giới Tính</th>
+            <th>Địa chỉ</th>
+            <th>Số điện thoại</th>
+            <th>Khoa</th>
+            <th>Chuyên Ngành</th>
+            <th>Sửa</th>
+            <th>Xóa</th>
+        </tr>
+        </thead>
+        <tbody id="content">
+        </tbody>
+    </table>
+</div>
+<button type="button" class="btn btn-primary" id="btn-del-multiple">Xóa</button>
 
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Chuyên Ngành *</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" id="major" name="major" required>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" id="btn-create">Thêm</button>
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
-                                </div>
-                            </form>
+<div class="row d-flex justify-content-center modalWrapper">
+    <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold ml-5">Tạo mới sinh viên</h4>
+                    <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <form id="formAdd" name="formAdd">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Mã sinh viên *</label>
+                            <div class="col-sm-9">
+                                <input id="id"
+                                       type="text"
+                                       class="form-control"
+                                       name="id"
+                                       required>
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Họ tên *</label>
+                            <div class="col-sm-9">
+                                <input id="name"
+                                       type="text"
+                                       class="form-control"
+                                       name="name"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Giới tính *</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="gender" name="gender" required>
+                                    <option>Nam</option>
+                                    <option>Nữ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Ngày sinh *</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="date"
+                                       id="birthday"
+                                       value="2019-06-10"
+                                       required
+                                       name="birthday">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Địa chỉ </label>
+                            <div class="col-sm-9">
+                                <input id="address"
+                                       type="text"
+                                       class="form-control"
+                                       name="address">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Số điện thoại *</label>
+                            <div class="col-sm-9">
+                                <input id="phone_number"
+                                       type="text"
+                                       class="form-control"
+                                       name="phone_number">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Khoa *</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="faculty" name="faculty" required>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Chuyên Ngành *</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="major" name="major" required>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+
+
 </body>
 <script>
     var faculty_data = [
@@ -167,12 +158,12 @@
     var major_data = [
         {
             'id': 1,
-            'name': 'phan mem',
+            'name': 'CNTT1',
             'faculty_id': 1
         },
         {
             'id': 2,
-            'name': 'phan cung',
+            'name': 'CNTT2',
             'faculty_id': 1
         },
         {
@@ -191,66 +182,107 @@
             'faculty_id': 2
         }
     ]
+
+    window.onload = function () {
+        dependentBox()
+    }
+
+    //load data table
+    function loadtable(my_data) {
+        content = ''
+        my_data.forEach(function (obj) {
+            var row_content =
+                '<tr>\n' +
+                '<td scope="row">\n' +
+                '<input class="custom-control custom-checkbox" type="checkbox">\n' +
+                '</div>\n' +
+                '</td>\n' +
+                '<td>' + obj.id + '</td>\n' +
+                '<td>' + obj.name + '</td>\n' +
+                '<td>' + obj.birthday + '</td>\n' +
+                '<td>' + obj.gender + '</td>\n' +
+                '<td>' + obj.address + '</td>\n' +
+                '<td>' + obj.phone_number + '</td>\n' +
+                '<td>' + obj.faculty + '</td>\n' +
+                '<td>' + obj.major + '</td>\n' +
+                '<td>\n' +
+                '<button type="button" class="btn" data-target="#modalAdd" data-toggle="modal" id="' + obj.id + '"><i class="fa fa-pencil"></i></button>\n' +
+                '</td>\n' +
+                '<td>\n' +
+                '<button class="btn btn-delete" data-value="' + obj.id + '"><i class="fa fa-trash"></i></button>\n' +
+                '</td>\n' +
+                '</tr>\n'
+            content += row_content
+        })
+        return content
+    }
+
     //getdata from file json and load data to screen
     var my_data
     $.getJSON("data.json", function (data) {
         my_data = data
-        content = ''
-        data.forEach(function (obj) {
-            var row_content =
-                '<tr>\n' +
-                '<th scope="row">\n' +
-                '<div class="custom-control custom-checkbox">\n' +
-                '<input type="checkbox" class="custom-control-input">\n' +
-                '<label class="custom-control-label"></label>\n' +
-                '</div>\n' +
-                '</th>\n' +
-                '<th>' + obj.id + '</th>\n' +
-                '<th>' + obj.name + '</th>\n' +
-                '<th>' + obj.birthday + '</th>\n' +
-                '<th>' + obj.gender + '</th>\n' +
-                '<th>' + obj.address + '</th>\n' +
-                '<th>' + obj.phone_number + '</th>\n' +
-                '<th>' + obj.faculty + '</th>\n' +
-                '<th>' + obj.major + '</th>\n' +
-                '<th>\n' +
-                '<button class="btn btn-outline-primary"><i class="fa fa-pencil"></i></button>\n' +
-                '</th>\n' +
-                '<th>\n' +
-                '<button class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>\n' +
-                '</th>\n' +
-                '</tr>\n'
-            content += row_content
-        })
-        document.getElementById("content").innerHTML = content
+        $("#content").html(loadtable(my_data))
     });
 
-    function show_modal() {
-        $('#modalAdd').modal();
-    }
+    //show modal
+    $('#modalAdd').on('show.bs.modal', function (e) {
+        id = e.relatedTarget.id
+        if (id == 0) {
+            $('.modal-footer').html('<button type="button" class="btn btn-primary" id="btn-create">Thêm</button>\n' +
+                '<button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>')
+        } else {
+            $('.modal-footer').html('<button type="button" class="btn btn-primary" id="btn-edit" >Cập nhật</button>\n' +
+                '<button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>')
+
+            info_by_user = getInfoByStudent(id)
+            $('#id').val(info_by_user[0].id)
+            $('#name').val(info_by_user[0].name)
+            $('#gender').val(info_by_user[0].gender)
+            $('#birthday').val(info_by_user[0].birthday)
+            $('#address').val(info_by_user[0].address)
+            $('#phone_number').val(info_by_user[0].phone_number)
+            $('#faculty').val($.grep(faculty_data, function (ele, i) {
+                return ele.name == info_by_user[0].faculty
+            })[0].id)
+            $('#major').val($.grep(major_data, function (ele, i) {
+                return ele.name == info_by_user[0].major
+            })[0].name)
+
+            name_major = $.grep(major_data, function (ele, i) {
+                return ele.name == info_by_user[0].major
+            })[0].name
+
+            $("#major").find('option').filter(function () {
+                return $(this).text() == name_major;
+            }).prop('selected', true);
+        }
+    })
 
     //dependent box faculty and major
-    var faculty_content = ""
-    faculty_data.forEach(function (data) {
-        faculty_content += '<option value="' + data.id + '">' + data.name + '</option>'
-    })
-    document.getElementById("faculty").innerHTML = faculty_content
+    function dependentBox() {
+        var faculty_content = ""
+        faculty_data.forEach(function (data) {
+            faculty_content += '<option value="' + data.id + '">' + data.name + '</option>'
+        })
+        document.getElementById("faculty").innerHTML = faculty_content
 
-    var major_content = ""
-    major_data.forEach(function (data) {
-        major_content += '<option value="' + data.faculty_id + '">' + data.name + '</option>'
-    })
-    document.getElementById("major").innerHTML = major_content
+        var major_content = ""
+        major_data.forEach(function (data) {
+            major_content += '<option value="' + data.faculty_id + '">' + data.name + '</option>'
+        })
+        document.getElementById("major").innerHTML = major_content
 
-    var faculty = $("#faculty")
-    var major = $("#major")
-    $options = major.find('option')
+        var faculty = $("#faculty")
+        var major = $("#major")
+        $options = major.find('option')
 
-    faculty.on('change', function () {
-        major.html($options.filter('[value="' + this.value + '"]'))
-    }).trigger('change')
+        faculty.on('change', function () {
+            major.html($options.filter('[value="' + this.value + '"]'))
+        }).trigger('change')
+    }
 
-    $('#btn-create').click(function (e) {
+    //create new student
+    $('.modal-footer').on('click', '#btn-create', function () {
         //get data from form and format
         var formInputs = $('#formAdd').serializeArray()
         var obj = {}
@@ -291,43 +323,113 @@
             if (obj.id == ele.id) {
                 check = false
                 $('#modalAdd').modal('hide')
-                document.getElementById("msg").innerHTML = '<label>Trùng mã số sinh viên!</label>'
+                $("#msg").html('<label>Trùng mã số sinh viên!</label>')
             }
         })
 
         if (check == true) {
             my_data.push(obj)
-            content = ''
-            my_data.forEach(function (obj) {
-                var row_content =
-                    '<tr>\n' +
-                    '<th scope="row">\n' +
-                    '<div class="custom-control custom-checkbox">\n' +
-                    '<input type="checkbox" class="custom-control-input">\n' +
-                    '<label class="custom-control-label"></label>\n' +
-                    '</div>\n' +
-                    '</th>\n' +
-                    '<th>' + obj.id + '</th>\n' +
-                    '<th>' + obj.name + '</th>\n' +
-                    '<th>' + obj.birthday + '</th>\n' +
-                    '<th>' + obj.gender + '</th>\n' +
-                    '<th>' + obj.address + '</th>\n' +
-                    '<th>' + obj.phone_number + '</th>\n' +
-                    '<th>' + obj.faculty + '</th>\n' +
-                    '<th>' + obj.major + '</th>\n' +
-                    '<th>\n' +
-                    '<button class="btn btn-outline-primary"><i class="fa fa-pencil"></i></button>\n' +
-                    '</th>\n' +
-                    '<th>\n' +
-                    '<button class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>\n' +
-                    '</th>\n' +
-                    '</tr>\n'
-                content += row_content
-            })
-            document.getElementById("content").innerHTML = content
+            $("#content").html(loadtable(my_data))
+            $('#modalAdd').modal('hide')
+            $("#msg").html('<label>Thêm thành công</label>')
         }
-        console.log(my_data)
     })
+    // delete student
+    $('tbody').on('click', '.btn-delete', function (e) {
+        var id = $(this).data("value")
+        if (confirm("Are you sure delete it ?")) {
+            my_data = $.grep(my_data, function (ele, i) {
+                return ele.id != id
+            });
+            $("#content").html(loadtable(my_data))
+            $("#msg").html('<label>Xóa thành công</label>')
+        }
+    });
 
+    // delete multiple student
+    $('#select-all').click(function (e) {
+        $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+    });
+
+    $('#btn-del-multiple').click(function (e) {
+        if (confirm("Are you sure delete its ?")) {
+            check = false
+            $('input:checked').each(function () {
+                var id = $(this).closest('tr').find('td:nth-child(2)').text();
+                my_data = $.grep(my_data, function (ele, i) {
+                    return ele.id != id
+                });
+                check = true
+            });
+            if (check == true) {
+                $("#content").html(loadtable(my_data))
+                $("#msg").html('<label>Xóa thành công</label>')
+            } else {
+                $("#msg").html('<label>Vui lòng chọn sinh viên để xóa</label>')
+            }
+        }
+    });
+
+    //get info by one student
+
+    function getInfoByStudent() {
+        return $.grep(my_data, function (ele, i) {
+            return ele.id == id
+        });
+    }
+
+    //edit student
+    $('.modal-footer').on('click', '#btn-edit', function () {
+        //get data from form and format
+        var formInputs = $('#formAdd').serializeArray()
+        var obj = {}
+        formInputs.forEach(function (data) {
+            switch (data.name) {
+                case 'id':
+                    obj.id = data.value
+                    break;
+                case 'name':
+                    obj.name = data.value
+                    break;
+                case 'birthday':
+                    obj.birthday = data.value
+                    break;
+                case 'gender':
+                    obj.gender = data.value
+                    break;
+                case 'address':
+                    obj.address = data.value
+                    break;
+                case 'phone_number':
+                    obj.phone_number = data.value
+                    break;
+                case 'faculty':
+                    data.value = $("#faculty option:selected").text()
+                    obj.faculty = data.value
+                    break;
+                case 'major':
+                    data.value = $("#major option:selected").text()
+                    obj.major = data.value
+                    break;
+                default:
+            }
+        })
+        //validate duplicate id
+        check = true
+        my_data.forEach(function (ele) {
+            if (obj.id == ele.id) {
+                check = false
+                $('#modalAdd').modal('hide')
+                $("#msg").html('<label>Trùng mã số sinh viên!</label>')
+            }
+        })
+
+        if (check == true) {
+            my_data.push(obj)
+            $("#content").html(loadtable(my_data))
+            $('#modalAdd').modal('hide')
+            $("#msg").html('<label>Cập nhật thành công</label>')
+        }
+    })
 </script>
 </html>

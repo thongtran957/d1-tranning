@@ -2,22 +2,32 @@
   {
     "id": 1,
     "name": "tom",
-    "birthday": "8/1/1997",
+    "birthday": "2019-06-10",
     "gender": "Nam",
     "address": "Da nang",
     "phone_number": "097798746",
     "faculty": "CNTT",
-    "major": "CNPM"
+    "major": "CNTT1"
   },
   {
     "id": 2,
     "name": "jerry",
-    "birthday": "8/1/1997",
+    "birthday": "2019-06-10",
+    "gender": "Nữ",
+    "address": "Da nang",
+    "phone_number": "097798746",
+    "faculty": "CNTT",
+    "major": "CNTT2"
+  },
+  {
+    "id": 3,
+    "name": "mickey",
+    "birthday": "2019-06-10",
     "gender": "Nam",
     "address": "Da nang",
     "phone_number": "097798746",
     "faculty": "CNTT",
-    "major": "CNPM"
+    "major": "CNTT1"
   }
 ]
 
