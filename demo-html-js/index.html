@@ -222,7 +222,11 @@
 
     var validate = $("#formAdd").validate({
         rules: {
-            id: "required",
+            id: {
+                required: true,
+                number: true,
+                min: 1,
+            },
             name: "required",
             phone_number: {
                 required: true,
