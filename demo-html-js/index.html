@@ -224,7 +224,10 @@
         rules: {
             id: "required",
             name: "required",
-            phone_number: "required",
+            phone_number: {
+                required: true,
+                digits: true
+            },
         }
     });
 
