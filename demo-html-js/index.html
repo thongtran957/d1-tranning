@@ -206,7 +206,7 @@
                 '<td>' + obj.faculty + '</td>\n' +
                 '<td>' + obj.major + '</td>\n' +
                 '<td>\n' +
-                '<button type="button" class="btn" data-target="#modalAdd" data-toggle="modal" id="' + obj.id + '"><i class="fa fa-pencil"></i></button>\n' +
+                '<button class="btn" data-target="#modalAdd" data-toggle="modal" id="' + obj.id + '"><i class="fa fa-pencil"></i></button>\n' +
                 '</td>\n' +
                 '<td>\n' +
                 '<button class="btn btn-delete" data-value="' + obj.id + '"><i class="fa fa-trash"></i></button>\n' +
@@ -233,6 +233,7 @@
         } else {
             $('.modal-footer').html('<button type="button" class="btn btn-primary" id="btn-edit" >Cập nhật</button>\n' +
                 '<button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>')
+            $("#id").prop("readonly", true);
 
             info_by_user = getInfoByStudent(id)
             $('#id').val(info_by_user[0].id)
@@ -414,22 +415,22 @@
                 default:
             }
         })
-        //validate duplicate id
-        check = true
-        my_data.forEach(function (ele) {
-            if (obj.id == ele.id) {
-                check = false
-                $('#modalAdd').modal('hide')
-                $("#msg").html('<label>Trùng mã số sinh viên!</label>')
+        my_data.filter(function (ele) {
+            if (ele.id == obj.id) {
+                ele.name = obj.name,
+                    ele.birthday = obj.birthday,
+                    ele.gender = obj.gender,
+                    ele.address = obj.address,
+                    ele.phone_number = obj.phone_number,
+                    ele.faculty = obj.faculty,
+                    ele.major = obj.major
             }
         })
 
-        if (check == true) {
-            my_data.push(obj)
-            $("#content").html(loadtable(my_data))
-            $('#modalAdd').modal('hide')
-            $("#msg").html('<label>Cập nhật thành công</label>')
-        }
+        $("#content").html(loadtable(my_data))
+        $('#modalAdd').modal('hide')
+        $("#msg").html('<label>Cập nhật thành công</label>')
     })
+
 </script>
 </html>
