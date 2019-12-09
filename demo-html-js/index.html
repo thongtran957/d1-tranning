@@ -123,7 +123,6 @@
                             <label class="col-sm-3 col-form-label">Khoa *</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="faculty" name="faculty" required>
-
                                 </select>
                             </div>
                         </div>
@@ -135,6 +134,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="btn-save" data-id="1">Thêm</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
                         </div>
                     </form>
                 </div>
@@ -197,7 +198,7 @@
             var row_content =
                 '<tr>\n' +
                 '<td scope="row">\n' +
-                '<input class="custom-control custom-checkbox" type="checkbox">\n' +
+                '<input class="custom-control custom-checkbox" type="checkbox" value="' + obj.id + '">\n' +
                 '</div>\n' +
                 '</td>\n' +
                 '<td>' + obj.id + '</td>\n' +
@@ -246,16 +247,14 @@
     $('#modalAdd').on('show.bs.modal', function (e) {
         id = e.relatedTarget.id
         if (id == 0) {
-            $('.modal-footer').html('<button type="button" class="btn btn-primary" id="btn-create">Thêm</button>\n' +
-                '<button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>')
             $('#id').val('')
             $('#name').val('')
             $('#birthday').val('2019-06-10')
             $('#address').val('')
             $('#phone_number').val('')
         } else {
-            $('.modal-footer').html('<button type="button" class="btn btn-primary" id="btn-edit" >Cập nhật</button>\n' +
-                '<button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>')
+            $("#btn-save").html("Cập nhật")
+            $("#btn-save").attr("data-id", 2)
             $("#id").prop("readonly", true);
 
             info_by_user = getInfoByStudent(id)
@@ -288,79 +287,20 @@
         faculty_data.forEach(function (data) {
             faculty_content += '<option value="' + data.id + '">' + data.name + '</option>'
         })
-        $("faculty").innerHTML = faculty_content
-
+        $("#faculty").html(faculty_content)
         var major_content = ""
         major_data.forEach(function (data) {
             major_content += '<option value="' + data.faculty_id + '">' + data.name + '</option>'
         })
-        $("major").innerHTML = major_content
-
+        $("#major").html(major_content)
         var faculty = $("#faculty")
         var major = $("#major")
         $options = major.find('option')
-
         faculty.on('change', function () {
             major.html($options.filter('[value="' + this.value + '"]'))
         }).trigger('change')
     }
 
-    //create new student
-    $('.modal-footer').on('click', '#btn-create', function () {
-        //get data from form and format
-        if ($('#formAdd').valid()) {
-            var formInputs = $('#formAdd').serializeArray()
-            var obj = {}
-            formInputs.forEach(function (data) {
-                switch (data.name) {
-                    case 'id':
-                        obj.id = data.value
-                        break;
-                    case 'name':
-                        obj.name = data.value
-                        break;
-                    case 'birthday':
-                        obj.birthday = data.value
-                        break;
-                    case 'gender':
-                        obj.gender = data.value
-                        break;
-                    case 'address':
-                        obj.address = data.value
-                        break;
-                    case 'phone_number':
-                        obj.phone_number = data.value
-                        break;
-                    case 'faculty':
-                        data.value = $("#faculty option:selected").text()
-                        obj.faculty = data.value
-                        break;
-                    case 'major':
-                        data.value = $("#major option:selected").text()
-                        obj.major = data.value
-                        break;
-                    default:
-                }
-            })
-            //validate duplicate id
-            check = true
-            my_data.forEach(function (ele) {
-                if (obj.id == ele.id) {
-                    check = false
-                    $('#modalAdd').modal('hide')
-                    $("#msg").html('<label>Trùng mã số sinh viên!</label>')
-                }
-            })
-
-            if (check == true) {
-                my_data.push(obj)
-                $("#content").html(loadtable(my_data))
-                $('#modalAdd').modal('hide')
-                $("#msg").html('<label>Thêm thành công</label>')
-            }
-            validate.reset()
-        }
-    })
     // delete student
     $('tbody').on('click', '.btn-delete', function (e) {
         var id = $(this).data("value")
@@ -379,35 +319,31 @@
     });
 
     $('#btn-del-multiple').click(function (e) {
-        if (confirm("Are you sure delete its ?")) {
-            check = false
-            $('input:checked').each(function () {
-                var id = $(this).closest('tr').find('td:nth-child(2)').text();
-                my_data = $.grep(my_data, function (ele, i) {
-                    return ele.id != id
-                });
-                check = true
+        check = false
+        $('input:checked').each(function () {
+            my_data = $.grep(my_data, function (ele, i) {
+                return ele.id != $(this).val()
             });
-            if (check == true) {
+            check = true
+        });
+        if (check == true) {
+            if (confirm("Are you sure delete its ?")) {
                 $("#content").html(loadtable(my_data))
                 $("#msg").html('<label>Xóa thành công</label>')
-            } else {
-                $("#msg").html('<label>Vui lòng chọn sinh viên để xóa</label>')
             }
+        } else {
+            $("#msg").html('<label>Vui lòng chọn sinh viên để xóa</label>')
         }
     });
 
     //get info by one student
-
     function getInfoByStudent() {
         return $.grep(my_data, function (ele, i) {
             return ele.id == id
         });
     }
 
-    //edit student
-    $('.modal-footer').on('click', '#btn-edit', function () {
-        //get data from form and format
+    $('#btn-save').click(function () {
         if ($('#formAdd').valid()) {
             var formInputs = $('#formAdd').serializeArray()
             var obj = {}
@@ -442,21 +378,36 @@
                     default:
                 }
             })
-            my_data.filter(function (ele) {
-                if (ele.id == obj.id) {
-                    ele.name = obj.name,
-                        ele.birthday = obj.birthday,
-                        ele.gender = obj.gender,
-                        ele.address = obj.address,
-                        ele.phone_number = obj.phone_number,
-                        ele.faculty = obj.faculty,
-                        ele.major = obj.major
-                }
-            })
+            if ($('#btn-save').attr('data-id') == "1") {
+                //validate duplicate id
+                check = true
+                my_data.forEach(function (ele) {
+                    if (obj.id == ele.id) {
+                        check = false
+                        $("#msg").html('<label>Trùng mã số sinh viên!</label>')
+                    }
+                })
 
+                if (check == true) {
+                    my_data.push(obj)
+                    $("#msg").html('<label>Thêm thành công</label>')
+                }
+            } else if ($('#btn-save').attr('data-id') == "2") {
+                my_data.filter(function (ele) {
+                    if (ele.id == obj.id) {
+                        ele.name = obj.name,
+                            ele.birthday = obj.birthday,
+                            ele.gender = obj.gender,
+                            ele.address = obj.address,
+                            ele.phone_number = obj.phone_number,
+                            ele.faculty = obj.faculty,
+                            ele.major = obj.major
+                    }
+                })
+                $("#msg").html('<label>Cập nhật thành công</label>')
+            }
             $("#content").html(loadtable(my_data))
             $('#modalAdd').modal('hide')
-            $("#msg").html('<label>Cập nhật thành công</label>')
             validate.reset()
         }
     })
