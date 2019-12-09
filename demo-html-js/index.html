@@ -288,13 +288,13 @@
         faculty_data.forEach(function (data) {
             faculty_content += '<option value="' + data.id + '">' + data.name + '</option>'
         })
-        document.getElementById("faculty").innerHTML = faculty_content
+        $("faculty").innerHTML = faculty_content
 
         var major_content = ""
         major_data.forEach(function (data) {
             major_content += '<option value="' + data.faculty_id + '">' + data.name + '</option>'
         })
-        document.getElementById("major").innerHTML = major_content
+        $("major").innerHTML = major_content
 
         var faculty = $("#faculty")
         var major = $("#major")

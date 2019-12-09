@@ -1,3 +1,0 @@
-1. SELECT post.post_id, post.post_name, post.description FROM post JOIN category ON post.cat_id = category.cat_id where category.cat_name = "cat 1"
-2. SELECT * from category WHERE cat_id NOT IN (SELECT cat_id from post)
-3. SELECT cat_id, count(*) as total_post_by_cat from post GROUP BY cat_id
